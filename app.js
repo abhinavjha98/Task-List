@@ -17,7 +17,6 @@ function loadEventListners(){
     taskList.addEventListener('click',removeTask); 
     //Clear All Task
     clearBtn.addEventListener('click',removeAllTask);
-    
     //Filter Task
     filter.addEventListener('keyup',filterTask);
 }
@@ -32,18 +31,7 @@ function getTask(){
     }
     
     tasks.forEach(function(task){    
-    //Create Li Element
-    const li = document.createElement('li');
-    //Add Class
-    li.className = 'collection-item';
-    li.appendChild(document.createTextNode(task));
-    //Create Delete Link
-    const link = document.createElement('a');
-    link.className = 'delete-item secondary-content';
-    link.innerHTML = '<i class="fa fa-remove"></li>';
-    li.appendChild(link);
-    //Append Li to ui
-    taskList.appendChild(li);
+      createLIElement(task);
     })    
 }
 
@@ -53,18 +41,8 @@ function addTask(e){
         alert('Add a Task');
         return;
     }
-
-    //Create Li Element
-    const li = document.createElement('li');
-    li.className = 'collection-item';
-    li.appendChild(document.createTextNode(taskInput.value));
-    //Create Delete Link
-    const link = document.createElement('a');
-    link.className = 'delete-item secondary-content';
-    link.innerHTML = '<i class="fa fa-remove"></li>';
-    li.appendChild(link);
-    //Append Li to ui
-    taskList.appendChild(li);
+    createLIElement(taskInput.value);
+    
     //Store in LS
     storeTaskInLocalStorage(taskInput.value);
     
@@ -73,6 +51,33 @@ function addTask(e){
     
     e.preventDefault();
 }
+
+//Create Element
+function createLIElement(taskvalue){
+    //Create Li Element
+    const li = document.createElement('li');
+    //Add Class to Li
+    li.className = 'collection-item';
+//    //Create a CheckBox
+//    const label = document.createElement('label');
+//    label.innerHTML = '<input type="checkbox" class="check-box" />';
+//    const span = document.createElement('span');
+//    //span.appendChild(document.createTextNode(taskvalue));
+//    label.appendChild(span);
+//    //Add Checkbox to li
+//    li.appendChild(label);
+    li.appendChild(document.createTextNode(taskvalue));
+    //Create Delete Link
+    const link = document.createElement('a');  
+    link.className = 'delete-item secondary-content';
+    link.innerHTML = '<i class="fa fa-remove"></li>';
+    //Add link to li
+    li.appendChild(link);
+    //Append Li to ui
+    taskList.appendChild(li);
+  
+}
+
 
 //Store task
 function storeTaskInLocalStorage(task){
@@ -98,6 +103,9 @@ function removeTask(e){
             removeTaskFromLocalStorage(e.target.parentElement.parentElement);   
         }    
     }
+    else if(e.target.className === 'check-box'){
+      console.log('checkbox clicked');
+    }  
 }
 
 //Remove from LS
